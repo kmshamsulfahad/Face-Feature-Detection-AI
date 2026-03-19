@@ -35,4 +35,8 @@ pip install -r requirements.txt
 python face_detection.py
 
 ## 📸 Output
-![Output](image.png)
+
+![Output1](image1facedetect.png)
+![Output2](image2facedetect.png)
+![Output3](image3facedetect.png)
+![Output4](image4facedetect.png)
