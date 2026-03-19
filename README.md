@@ -33,7 +33,6 @@ It detects and classifies:
 ```bash
 pip install -r requirements.txt
 python face_detection.py
-
 ## 📸 Output
 
 ![Output1](image1facedetect.png)
