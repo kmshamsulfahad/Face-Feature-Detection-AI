@@ -1,26 +1,35 @@
-<<<<<<< HEAD
-# Face Feature Detection AI 
+#  Face Feature Detection AI
 
-# Description
-This project detects facial features in real-time using a webcam.
+## Overview
+This project performs real-time face feature detection using a webcam.  
+It detects and classifies:
 
-# Features
-- Left Eye Detection (Open/Closed)
-- Right Eye Detection (Open/Closed)
-- Mouth Detection (Open/Closed)
-- Real-time bounding boxes
+-  Left Eye (Open/Closed)
+-  Right Eye (Open/Closed)
+-  Mouth (Open/Closed)
 
-# Tech Stack
+---
+
+## Technologies Used
 - Python
 - OpenCV
 - MediaPipe
 - NumPy
 
+---
+
+## How It Works
+- Captures video using webcam
+- Uses MediaPipe Face Mesh (468 landmarks)
+- Calculates:
+  - Eye Aspect Ratio (EAR)
+  - Mouth Aspect Ratio (MAR)
+- Classifies states based on thresholds
+
+---
+
+## Run the Project
 
 ```bash
 pip install -r requirements.txt
 python face_detection.py
-=======
-# Face-Feature-Detection-AI
-Real-time face feature detection using MediaPipe and OpenCV (Eye &amp; Mouth classification)
->>>>>>> 4b98df48f74ba84c125ca6d9dc263bb0da64d722
