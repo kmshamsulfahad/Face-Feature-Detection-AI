@@ -10,7 +10,6 @@ cap = cv2.VideoCapture(0)
 def calculate_distance(p1, p2):
     return np.linalg.norm(np.array(p1) - np.array(p2))
 
-# 🔥 CLEAN BOX + POSITIONED LABEL
 def draw_box(frame, points, label, state, position="left"):
     x_coords = [p[0] for p in points]
     y_coords = [p[1] for p in points]
@@ -26,26 +25,24 @@ def draw_box(frame, points, label, state, position="left"):
 
     color = (0,255,0) if state == "Open" else (0,0,255)
 
-    # Draw box
     cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), color, 2)
 
-    # 🔥 POSITION LOGIC
     if position == "left":
-        text_x = max(10, x_min - 140)   # left side of face
+        text_x = max(10, x_min - 140) 
         text_y = y_min
 
     elif position == "right":
-        text_x = min(frame.shape[1] - 200, x_max + 10)  # right side
+        text_x = min(frame.shape[1] - 200, x_max + 10)
         text_y = y_min
 
-    else:  # mouth center
+    else:
         text_x = x_min
         text_y = y_max + 30
 
     cv2.putText(frame, label, (text_x, text_y),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
 
-# 🔥 Threshold tuning
+
 LEFT_THRESHOLD = 0.23
 RIGHT_THRESHOLD = 0.23
 MOUTH_THRESHOLD = 0.5
@@ -70,23 +67,18 @@ while True:
                 lm = face_landmarks.landmark[index]
                 return int(lm.x * w), int(lm.y * h)
 
-            # LEFT EAR
             p1, p2, p3, p4, p5, p6 = [get_coords(i) for i in left_eye]
             left_EAR = (calculate_distance(p2, p6) + calculate_distance(p3, p5)) / (2 * calculate_distance(p1, p4))
 
-            # RIGHT EAR
             p1, p2, p3, p4, p5, p6 = [get_coords(i) for i in right_eye]
             right_EAR = (calculate_distance(p2, p6) + calculate_distance(p3, p5)) / (2 * calculate_distance(p1, p4))
 
-            # MOUTH MAR
             m1, m2, m3, m4 = [get_coords(i) for i in mouth]
             MAR = calculate_distance(m1, m2) / calculate_distance(m3, m4)
 
-            # 🔥 IMPROVED CLASSIFICATION
             left_eye_state = "Closed" if left_EAR < LEFT_THRESHOLD else "Open"
             right_eye_state = "Closed" if right_EAR < RIGHT_THRESHOLD else "Open"
 
-            # 🔥 One-eye detection fix
             if abs(left_EAR - right_EAR) > 0.07:
                 if left_EAR < right_EAR:
                     left_eye_state = "Closed"
@@ -97,12 +89,10 @@ while True:
 
             mouth_state = "Open" if MAR > MOUTH_THRESHOLD else "Closed"
 
-            # Points
             left_eye_points = [get_coords(i) for i in left_eye]
             right_eye_points = [get_coords(i) for i in right_eye]
             mouth_points = [get_coords(i) for i in mouth]
 
-            # 🔥 CLEAN POSITIONED DRAWING
             draw_box(frame, left_eye_points,
                      f"Left Eye: {left_eye_state}",
                      left_eye_state,
